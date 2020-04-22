@@ -31,13 +31,7 @@ let timestampStart;
 let statsInterval = null;
 let bitrateMax = 0;
 
-/**
- * Sender clicks generate and generates the process.
- */
-document.querySelector("#generate-btn").addEventListener("click", function() {
-  createConnection();
-});
-
+sendFileButton.addEventListener('click', () => createConnection());
 fileInput.addEventListener('change', handleFileInputChange, false);
 abortButton.addEventListener('click', () => {
   if (fileReader && fileReader.readyState === 1) {
@@ -55,14 +49,9 @@ async function handleFileInputChange() {
   }
 }
 
-/**
- * Creates new rtc peer connection.
- */
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
-
-  // local connection
   localConnection = new RTCPeerConnection();
   console.log('Created local peer connection object localConnection');
 
@@ -79,7 +68,15 @@ async function createConnection() {
     await remoteConnection.addIceCandidate(event.candidate);
   });
 
-  
+  remoteConnection = new RTCPeerConnection();
+  console.log('Created remote peer connection object remoteConnection');
+
+  remoteConnection.addEventListener('icecandidate', async event => {
+    console.log('Remote ICE candidate: ', event.candidate);
+    await localConnection.addIceCandidate(event.candidate);
+  });
+  remoteConnection.addEventListener('datachannel', receiveChannelCallback);
+
   try {
     const offer = await localConnection.createOffer();
     await gotLocalDescription(offer);

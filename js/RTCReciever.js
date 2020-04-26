@@ -30,7 +30,7 @@ class RTCReciever {
 
     return new Promise(async function(resolve, reject) {
       self.connection.ondatachannel = event => {
-        event.channel.onopen = onConnectionEstablished(event.channel);
+        event.channel.onopen = self.onConnectionEstablished(event.channel);
       };
   
       self.connection.setRemoteDescription(new RTCSessionDescription(offer));

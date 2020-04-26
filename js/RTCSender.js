@@ -20,7 +20,7 @@ class RTCSender {
 
     return new Promise(async function (resolve, reject) {
       self.dataChannel = self.connection.createDataChannel(null);
-      self.dataChannel.onopen = event => self.onConnectionEstablished(dataChannel);
+      self.dataChannel.onopen = event => self.onConnectionEstablished(self.dataChannel);
 
       const localDesc = await self.connection.createOffer();
       self.connection.setLocalDescription(localDesc);

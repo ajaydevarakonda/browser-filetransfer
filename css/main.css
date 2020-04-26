@@ -23,7 +23,3 @@ form {
 progress {
   width: calc(100% - 8.5em);
 }
-
-body {
-  font-family: "Roboto";
-}

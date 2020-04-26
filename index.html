@@ -19,10 +19,9 @@
   <meta id="theme-color" name="theme-color" content="#ffffff">
 
   <base target="_blank">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
 
   <title>Transfer a file</title>
-
-  <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="css/main.css" />
 </head>
 
@@ -35,8 +34,12 @@
     <section>
       <div>
         <p>Description</p>
-        <textarea id="remote-desc-textarea" rows="3" cols="50"></textarea>
-        <p><button id="generate-btn">Generate</button> &nbsp; <button id="set">Set</button></p>
+        <textarea id="message-box" rows="8" cols="50"></textarea>
+        <p>
+          <button id="create-offer-btn">Create Offer</button> &nbsp;
+          <button id="create-ans-btn">Create Answer</button> &nbsp;
+          <button id="connect-btn">Connect</button>
+        </p>
       </div>
     </section>
 
@@ -56,6 +59,8 @@
       </div>
     </section>
 
+    <hr/>
+
     <section>
       <h3>Reciever</h3>
       <div class="progress">
@@ -63,6 +68,8 @@
         <progress id="receiveProgress" max="0" value="0"></progress>
       </div>
     </section>
+
+    <hr/>
 
     <section>
       <h3>Info</h3>
@@ -73,8 +80,9 @@
     </section>
   </div>
 
-  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-  <script src="js/RTCClient.js"></script>
+  <script src="js/adapter-latest.js"></script>
+  <script src="js/RTCSender.js"></script>
+  <script src="js/RTCReciever.js"></script>
   <script src="js/main2.js"></script>
 </body>
 </html>

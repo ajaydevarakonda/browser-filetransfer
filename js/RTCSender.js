@@ -56,7 +56,8 @@ class RTCSender {
   }
 
   onConnectionEstablished(dataChannel) {
+    console.log("[ + ] Connected!");
     window.setTimeout(() => dataChannel.send('hello'), 2000);
-    dataChannel.onmessage = event => print('Received : ' + event.data);
+    dataChannel.onmessage = event => console.log('Received : ' + event.data);
   }
 }

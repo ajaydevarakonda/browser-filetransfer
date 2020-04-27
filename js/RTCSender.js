@@ -10,6 +10,7 @@ class RTCSender {
     this.createOffer = this.createOffer.bind(this);
     this.connect = this.connect.bind(this);
     this.onConnectionEstablished = this.onConnectionEstablished.bind(this);
+    this.sendData = this.sendData.bind(this);
   }
 
   /**
@@ -54,6 +55,51 @@ class RTCSender {
 
     return this.connection.setRemoteDescription(answer);
   }
+
+  sendData(file) {
+    try {
+      const self = this;
+
+      console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
+  
+      if (file.size === 0) {
+        closeDataChannels();
+        return;
+      }
+
+      const chunkSize = 16384;
+      const fileReader = new FileReader();      
+      let offset = 0;
+
+      fileReader.addEventListener('error', error => console.error('Error reading file:', error));
+      fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
+      fileReader.addEventListener('load', e => {
+        console.log('FileRead.onload ', e);
+        self.dataChannel.send(e.target.result);
+        offset += e.target.result.byteLength;
+        sendProgress.value = offset;
+
+        if (offset < file.size) {
+          readSlice(offset);
+        }
+      });
+
+      fileReader.addEventListener('loadend', function() {
+        console.log("ended loading!");
+      })
+
+      const readSlice = o => {
+        console.log('readSlice ', o);
+        const slice = file.slice(offset, o + chunkSize);
+        fileReader.readAsArrayBuffer(slice);
+      };
+
+      readSlice(0);
+    } catch (err) {
+      console.error("Could not send file to the reciever!");
+      throw err;
+    }
+  }  
 
   onConnectionEstablished(dataChannel) {
     console.log("[ + ] Connected!");
